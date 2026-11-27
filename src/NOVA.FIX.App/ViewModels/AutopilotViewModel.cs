@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Threading;
 using NOVA.FIX.Autopilot;
 using NOVA.FIX.Core.Mvvm;
 using NOVA.FIX.Core.Services;
