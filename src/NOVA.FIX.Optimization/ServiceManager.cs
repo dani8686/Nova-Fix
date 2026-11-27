@@ -28,6 +28,23 @@ public sealed class ServiceManager
         _logger = logger;
     }
 
+    /// <summary>Writes the service Start value (HKLM system key).</summary>
+    private static void SetStartTypeRegistry(string serviceName, ServiceStartMode mode)
+    {
+        var startValue = mode switch
+        {
+            ServiceStartMode.Automatic => 2,
+            ServiceStartMode.Manual => 3,
+            ServiceStartMode.Disabled => 4,
+            _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null),
+        };
+        using var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+            @"SYSTEM\CurrentControlSet\Services\" + serviceName, writable: true)
+            ?? throw new InvalidOperationException(
+                $"Service key for '{serviceName}' not found (Administrator required).");
+        key.SetValue("Start", startValue, Microsoft.Win32.RegistryValueKind.DWord);
+    }
+
     public bool IsCritical(string serviceName) => CriticalServices.Contains(serviceName);
 
     public IReadOnlyList<ServiceEntry> InspectAll()
@@ -100,9 +117,19 @@ public sealed class ServiceManager
             using var sc = new ServiceController(serviceName);
             if (sc.StartType == mode)
                 return (true, "Already in the requested state.");
-            sc.Stop();
-            sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
-            sc.StartType = mode;
+
+            // Stop before changing start type when the service is running.
+            if (sc.Status == ServiceControllerStatus.Running
+                || sc.Status == ServiceControllerStatus.StartPending)
+            {
+                sc.Stop();
+                sc.WaitForStatus(ServiceControllerStatus.Stopped,
+                    TimeSpan.FromSeconds(30));
+            }
+
+            // ServiceController.StartType is read-only on .NET 8 — the Start
+            // value lives in the service registry key (2=Auto,3=Manual,4=Disabled).
+            SetStartTypeRegistry(serviceName, mode);
             sc.Refresh();
             _logger.Log(LogLevel.Info, "Services",
                 $"{serviceName} start type -> {mode}");
@@ -134,9 +161,7 @@ public sealed class ServiceManager
             if (IsCritical(name))
                 return (false, $"'{name}' is critical — restore denied.");
 
-            using var sc = new ServiceController(name);
-            sc.StartType = mode;
-            sc.Refresh();
+            SetStartTypeRegistry(name, mode);
             return (true, $"'{name}' restored to {mode}.");
         }
         catch (Exception ex)

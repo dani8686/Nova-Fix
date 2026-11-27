@@ -30,7 +30,7 @@ public sealed class StorageGuardian
     public IReadOnlyList<VolumeInfo> Volumes()
     {
         var list = new List<VolumeInfo>();
-        foreach (var d in DriveInfo.GetDrives())
+        foreach (var d in System.IO.DriveInfo.GetDrives())
         {
             if (!d.IsReady) continue;
             try

@@ -207,9 +207,11 @@ public sealed class RepairExecutor : IRepairExecutor
                         "High-risk action requires explicit user confirmation.");
                 var winsock = await _verbs.ResetWinsock(ct).ConfigureAwait(false);
                 var tcpip = await _verbs.ResetTcpIp(ct).ConfigureAwait(false);
-                return winsock.IsSuccess && tcpip.IsSuccess
-                    ? winsock with { ActionId = def.Id, Output = winsock.Output + tcpip.Output }
-                    : tcpip with { ActionId = def.Id };
+                var winOp = ToOp(def.Id, winsock);
+                var tcpOp = ToOp(def.Id, tcpip);
+                return winsock.Launched && winsock.ExitCode == 0
+                    ? winOp with { Output = winOp.Output + tcpOp.Output }
+                    : tcpOp;
             }
 
             case "storage.check-disk":
