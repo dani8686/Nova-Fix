@@ -225,7 +225,7 @@ public sealed class ReportGenerator
     private static string BuildCsv(ReportPayload p)
     {
         var sb = new StringBuilder();
-        sb.AppendLine($"# NOVA FIX report,generated,{p.Metadata.GeneratedAtUtc:yyyy-MM-dd HH:mm}Z");
+        sb.AppendLine($"# NOVA FIX report,generated,{p.Metadata.GeneratedAt:yyyy-MM-dd HH:mm}Z");
         sb.AppendLine("Severity,Title,Component,Confidence,Basis,Recommendation");
         foreach (var f in p.Findings.OrderByDescending(x => x.Severity))
         {
