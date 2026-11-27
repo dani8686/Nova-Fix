@@ -220,11 +220,16 @@ public sealed class ServiceManager
 
     private static string SafeDescription(ServiceController sc)
     {
+        // ServiceController.Description does not exist on .NET Core —
+        // the value lives in the service registry key.
         try
         {
-            return string.IsNullOrWhiteSpace(sc.Description)
+            using var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                @"SYSTEM\CurrentControlSet\Services\" + sc.ServiceName);
+            var desc = key?.GetValue("Description") as string;
+            return string.IsNullOrWhiteSpace(desc)
                 ? "(no description)"
-                : sc.Description;
+                : desc;
         }
         catch
         {

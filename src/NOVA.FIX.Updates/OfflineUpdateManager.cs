@@ -247,8 +247,9 @@ public sealed class OfflineUpdateManager
     {
         try
         {
-            using var cert = X509Certificate.CreateFromSignedFile(path);
-            if (cert is null) return "Unsigned";
+            using var rawCert = X509Certificate.CreateFromSignedFile(path);
+            if (rawCert is null) return "Unsigned";
+            using var cert = new X509Certificate2(rawCert);
             using var chain = new X509Chain();
             chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck; // offline
             var ok = chain.Build(cert);
@@ -280,9 +281,13 @@ public sealed class OfflineUpdateManager
                     using var sr = new StreamReader(entry.Open());
                     var manifest = System.Text.Json.JsonSerializer.Deserialize<
                         Dictionary<string, string>>(sr.ReadToEnd());
-                    manifest?.TryGetValue("version", out var v);
-                    manifest?.TryGetValue("component", out var c);
-                    manifest?.TryGetValue("notes", out var n);
+                    string? v = null, c = null, n = null;
+                    if (manifest is not null)
+                    {
+                        manifest.TryGetValue("version", out v);
+                        manifest.TryGetValue("component", out c);
+                        manifest.TryGetValue("notes", out n);
+                    }
                     return (v, (c, null, n));
                 }
             }

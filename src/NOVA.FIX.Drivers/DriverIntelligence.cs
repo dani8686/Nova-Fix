@@ -215,8 +215,9 @@ public sealed class DriverIntelligence
     {
         try
         {
-            using var cert = X509Certificate.CreateFromSignedFile(filePath);
-            if (cert is null) return "Unsigned";
+            using var rawCert = X509Certificate.CreateFromSignedFile(filePath);
+            if (rawCert is null) return "Unsigned";
+            using var cert = new X509Certificate2(rawCert);
             // Check the signature chain validity as far as the local store allows.
             using var chain = new X509Chain();
             chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck; // offline

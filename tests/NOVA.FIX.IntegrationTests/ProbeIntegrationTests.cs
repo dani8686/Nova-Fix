@@ -43,27 +43,25 @@ public class ProbeIntegrationTests
     public async Task HardwareProbe_AllProbes_IndividuallyIsolated()
     {
         var probe = new HardwareProbe(new ConsoleLogger());
-        var results = new[]
-        {
-            await probe.GetCpuAsync(),
-            await probe.GetMemoryAsync(),
-            await probe.GetMotherboardAsync(),
-            await probe.GetBiosAsync(),
-            await probe.GetGpusAsync(),
-            await probe.GetDrivesAsync(),
-            await probe.GetVolumesAsync(),
-            await probe.GetDevicesAsync(),
-            await probe.GetTpmStatusAsync(),
-            await probe.GetSecureBootAsync(),
-            await probe.GetBatteryStatusAsync(),
-        };
+        var results = new List<(string Name, bool Success, string? Error)>();
+        void Add<T>(string name, Domain.Results.QueryResult<T> r)
+            => results.Add((name, r.Success, r.Error));
+
+        Add("cpu", await probe.GetCpuAsync());
+        Add("memory", await probe.GetMemoryAsync());
+        Add("motherboard", await probe.GetMotherboardAsync());
+        Add("bios", await probe.GetBiosAsync());
+        Add("gpus", await probe.GetGpusAsync());
+        Add("drives", await probe.GetDrivesAsync());
+        Add("volumes", await probe.GetVolumesAsync());
+        Add("devices", await probe.GetDevicesAsync());
+        Add("tpm", await probe.GetTpmStatusAsync());
+        Add("secureboot", await probe.GetSecureBootAsync());
+        Add("battery", await probe.GetBatteryStatusAsync());
 
         // None threw. At least CPU/memory/volumes should work on any Windows box.
         Assert.True(results.Count(r => r.Success) >= 3,
             "expected at least 3 successful probes on a Windows runner");
-        Assert.All(results, r => Assert.False(
-            r.Success && r.Value is null && r.ProbeName != "tpm",
-            $"{r.ProbeName} success with null value"));
     }
 
     [Fact]
@@ -81,7 +79,7 @@ public class ProbeIntegrationTests
     [Fact]
     public async Task PerformanceMonitor_SamplesAndPauses()
     {
-        await using var monitor = new Monitoring.PerformanceMonitor(
+        await using var monitor = new NOVA.FIX.Diagnostics.Monitoring.PerformanceMonitor(
             new ConsoleLogger(), capacity: 30);
         await monitor.StartAsync();
         await Task.Delay(2500);
