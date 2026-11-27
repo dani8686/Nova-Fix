@@ -278,7 +278,7 @@ public sealed class DriverIntelligence
 
             // Model lines: %MfgName%=Models,NTamd64,PCI\VEN_8086&DEV_...
             if (section is not null
-                && section.StartsWith("[Models", StringComparison.OrdinalIgnoreCase)
+                && section.StartsWith("Models", StringComparison.OrdinalIgnoreCase)
                 && value.Contains("PCI\\", StringComparison.OrdinalIgnoreCase))
             {
                 foreach (var id in value.Split(',', StringSplitOptions.RemoveEmptyEntries))
@@ -292,7 +292,7 @@ public sealed class DriverIntelligence
             }
 
             if (section is not null
-                && section.StartsWith("[Manufacturer]", StringComparison.OrdinalIgnoreCase))
+                && section.StartsWith("Manufacturer", StringComparison.OrdinalIgnoreCase))
             {
                 // handled via Models sections below in real INFs
             }

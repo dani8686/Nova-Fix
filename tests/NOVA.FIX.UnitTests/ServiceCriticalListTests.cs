@@ -22,7 +22,7 @@ public class ServiceCriticalListTests
     }
 
     [Theory]
-    [InlineData("Spooler")]
+    [InlineData("RemoteRegistry")]
     [InlineData("SomeThirdPartySvc")]
     public void NonCriticalServices_AreModifiable(string serviceName)
     {

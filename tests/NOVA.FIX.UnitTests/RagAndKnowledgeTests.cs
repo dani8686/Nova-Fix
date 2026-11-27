@@ -66,6 +66,7 @@ public class RagAndKnowledgeTests
         }
         finally
         {
+            Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();
             Directory.Delete(dir, recursive: true);
         }
     }
@@ -94,6 +95,7 @@ public class RagAndKnowledgeTests
         }
         finally
         {
+            Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();
             Directory.Delete(dir, recursive: true);
         }
     }

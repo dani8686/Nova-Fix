@@ -43,6 +43,7 @@ public class OfflineAcceptanceTests
         }
         finally
         {
+            Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();
             Directory.Delete(dir, true);
         }
     }
