@@ -56,7 +56,7 @@ public class DeepScannerRulesTests
         var evidence = new List<EvidenceItem>
         {
             new("storage",
-                "Low free space on C:\: 3.0 GB free of 100.0 GB",
+                "Low free space on C:\\: 3.0 GB free of 100.0 GB",
                 EvidenceBasis.SystemEvidence),
         };
 

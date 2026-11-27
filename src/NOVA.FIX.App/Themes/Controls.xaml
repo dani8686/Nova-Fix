@@ -58,10 +58,6 @@
         <Setter Property="Background" Value="{StaticResource CardBrush}" />
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
-        <Setter Property="RowBackground" Value="{StaticResource CardBrush}" />
-        <Setter Property="AlternatingRowBackground" Value="{StaticResource ElevatedBrush}" />
-        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource BorderBrush}" />
-        <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
     </Style>
 

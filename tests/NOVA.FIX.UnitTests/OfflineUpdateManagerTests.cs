@@ -15,7 +15,7 @@ public class OfflineUpdateManagerTests
     public void Classify_ByExtensionAndName(string file, string expected)
     {
         var kind = OfflineUpdateManager.Classify(
-            Path.Combine("C:\updates", file),
+            Path.Combine(@"C:\updates", file),
             Path.GetExtension(file));
         Assert.Equal(expected, kind);
     }

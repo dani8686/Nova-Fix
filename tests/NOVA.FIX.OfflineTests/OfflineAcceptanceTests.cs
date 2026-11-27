@@ -61,7 +61,7 @@ public class OfflineAcceptanceTests
                     DateTime.UtcNow, "OFFLINE-PC"),
                 null, null,
                 Array.Empty<Domain.Models.DiagnosticFinding>(),
-                Array.Empty<Domain.Models.OperationResult>(),
+                Array.Empty<Domain.Results.OperationResult>(),
                 Array.Empty<string>());
 
             foreach (var fmt in new[]
