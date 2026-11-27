@@ -152,9 +152,9 @@ public sealed class DeepScanner
             Drives: Get<IReadOnlyList<DriveInfo>>("drives") ?? Array.Empty<DriveInfo>(),
             Volumes: Get<IReadOnlyList<VolumeInfo>>("volumes") ?? Array.Empty<VolumeInfo>(),
             Devices: Get<IReadOnlyList<DeviceEntry>>("devices") ?? Array.Empty<DeviceEntry>(),
-            TpmStatus: Get<string?>("tpm"),
+            TpmStatus: GetNullable<string>("tpm"),
             SecureBootEnabled: GetNullable<bool>("secureboot"),
-            BatteryStatus: Get<string?>("battery"),
+            BatteryStatus: GetNullable<string>("battery"),
             ProbeFailures: failures);
     }
 

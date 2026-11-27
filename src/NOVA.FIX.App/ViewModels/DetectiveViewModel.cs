@@ -4,6 +4,7 @@ using NOVA.FIX.AI.Rag;
 using NOVA.FIX.Core.Mvvm;
 using NOVA.FIX.Core.Services;
 using NOVA.FIX.Domain.Contracts;
+using NOVA.FIX.Diagnostics.Scanner;
 using NOVA.FIX.Domain.Models;
 
 namespace NOVA.FIX.App.ViewModels;
