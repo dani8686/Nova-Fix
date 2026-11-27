@@ -189,7 +189,7 @@ public sealed class AutopilotEngine
     {
         Id = $"auto-{step.FindingId}",
         ActionId = step.ActionId,
-        Target: step.Title,
+        Target = step.Title,
         Purpose = step.Rationale,
         ExpectedResult = "Issue resolved; verification step confirms.",
         Risk = step.Risk,
