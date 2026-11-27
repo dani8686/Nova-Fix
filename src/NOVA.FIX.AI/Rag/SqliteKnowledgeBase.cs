@@ -69,6 +69,25 @@ public sealed class SqliteKnowledgeBase : IKnowledgeBase
                 );
                 """, ct).ConfigureAwait(false);
 
+            // External-content FTS5 does not auto-populate: keep it in sync.
+            await ExecuteAsync(conn,
+                """
+                CREATE TRIGGER IF NOT EXISTS articles_ai AFTER INSERT ON articles BEGIN
+                    INSERT INTO articles_fts(rowid, title, content, tags)
+                    VALUES (new.rowid, new.title, new.content, new.tags);
+                END;
+                CREATE TRIGGER IF NOT EXISTS articles_ad AFTER DELETE ON articles BEGIN
+                    INSERT INTO articles_fts(articles_fts, rowid, title, content, tags)
+                    VALUES ('delete', old.rowid, old.title, old.content, old.tags);
+                END;
+                CREATE TRIGGER IF NOT EXISTS articles_au AFTER UPDATE ON articles BEGIN
+                    INSERT INTO articles_fts(articles_fts, rowid, title, content, tags)
+                    VALUES ('delete', old.rowid, old.title, old.content, old.tags);
+                    INSERT INTO articles_fts(rowid, title, content, tags)
+                    VALUES (new.rowid, new.title, new.content, new.tags);
+                END;
+                """, ct).ConfigureAwait(false);
+
             await ExecuteAsync(conn,
                 """
                 CREATE TABLE IF NOT EXISTS meta (
@@ -82,6 +101,16 @@ public sealed class SqliteKnowledgeBase : IKnowledgeBase
             if (count == 0 && File.Exists(_seedPath))
             {
                 await SeedAsync(conn, ct).ConfigureAwait(false);
+            }
+
+            // Rebuild FTS index if it is empty but articles exist (pre-trigger DBs).
+            var ftsCount = await ScalarAsync(conn, "SELECT COUNT(*) FROM articles_fts", ct)
+                .ConfigureAwait(false);
+            if (ftsCount == 0 && count > 0)
+            {
+                await ExecuteAsync(conn,
+                    "INSERT INTO articles_fts(articles_fts) VALUES ('rebuild');", ct)
+                    .ConfigureAwait(false);
             }
 
             DatabaseVersion = (await ScalarTextAsync(conn,
