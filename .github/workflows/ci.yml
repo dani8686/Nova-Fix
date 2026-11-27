@@ -42,25 +42,25 @@ jobs:
       - name: Unit tests
         run: >
           dotnet test tests/NOVA.FIX.UnitTests/NOVA.FIX.UnitTests.csproj
-          -c Release --no-build --logger "trx;LogFileName=unit.trx"
+          -c Release --no-build --logger "trx;LogFileName=unit.trx" --logger "console;verbosity=normal"
           --results-directory TestResults
 
       - name: Integration tests
         run: >
           dotnet test tests/NOVA.FIX.IntegrationTests/NOVA.FIX.IntegrationTests.csproj
-          -c Release --no-build --logger "trx;LogFileName=integration.trx"
+          -c Release --no-build --logger "trx;LogFileName=integration.trx" --logger "console;verbosity=normal"
           --results-directory TestResults
 
       - name: Offline acceptance tests
         run: >
           dotnet test tests/NOVA.FIX.OfflineTests/NOVA.FIX.OfflineTests.csproj
-          -c Release --no-build --logger "trx;LogFileName=offline.trx"
+          -c Release --no-build --logger "trx;LogFileName=offline.trx" --logger "console;verbosity=normal"
           --results-directory TestResults
 
       - name: UI view-model tests
         run: >
           dotnet test tests/NOVA.FIX.UITests/NOVA.FIX.UITests.csproj
-          -c Release --no-build --logger "trx;LogFileName=ui.trx"
+          -c Release --no-build --logger "trx;LogFileName=ui.trx" --logger "console;verbosity=normal"
           --results-directory TestResults
 
       - name: Publish self-contained x64
