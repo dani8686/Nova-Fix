@@ -60,6 +60,12 @@ jobs:
                   Write-Host "::error title=UnitTestFailed::$($r.Node.testName) :: $flat"
                   $summary += "``````n$($m.Node.InnerText)`n``````n"
                 }
+                $st = Select-Xml -Xml $r.Node -XPath ".//t:StackTrace" -Namespace $ns
+                foreach ($m in $st) {
+                  $flat = $m.Node.InnerText.Replace("`n"," | ")
+                  Write-Host "::error title=UnitTestFailed::$($r.Node.testName) STACK :: $flat"
+                  $summary += "STK: $flat`n"
+                }
               }
             }
             Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value $summary
@@ -88,6 +94,12 @@ jobs:
                   Write-Host "::error title=UnitTestFailed::$($r.Node.testName) :: $flat"
                   $summary += "``````n$($m.Node.InnerText)`n``````n"
                 }
+                $st = Select-Xml -Xml $r.Node -XPath ".//t:StackTrace" -Namespace $ns
+                foreach ($m in $st) {
+                  $flat = $m.Node.InnerText.Replace("`n"," | ")
+                  Write-Host "::error title=UnitTestFailed::$($r.Node.testName) STACK :: $flat"
+                  $summary += "STK: $flat`n"
+                }
               }
             }
             Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value $summary
@@ -115,6 +127,12 @@ jobs:
                   Write-Host "::error title=UnitTestFailed::$($r.Node.testName) :: $flat"
                   $summary += "``````n$($m.Node.InnerText)`n``````n"
                 }
+                $st = Select-Xml -Xml $r.Node -XPath ".//t:StackTrace" -Namespace $ns
+                foreach ($m in $st) {
+                  $flat = $m.Node.InnerText.Replace("`n"," | ")
+                  Write-Host "::error title=UnitTestFailed::$($r.Node.testName) STACK :: $flat"
+                  $summary += "STK: $flat`n"
+                }
               }
             }
             Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value $summary
@@ -141,6 +159,12 @@ jobs:
                   $flat = $m.Node.InnerText.Replace("`n"," | ")
                   Write-Host "::error title=UnitTestFailed::$($r.Node.testName) :: $flat"
                   $summary += "``````n$($m.Node.InnerText)`n``````n"
+                }
+                $st = Select-Xml -Xml $r.Node -XPath ".//t:StackTrace" -Namespace $ns
+                foreach ($m in $st) {
+                  $flat = $m.Node.InnerText.Replace("`n"," | ")
+                  Write-Host "::error title=UnitTestFailed::$($r.Node.testName) STACK :: $flat"
+                  $summary += "STK: $flat`n"
                 }
               }
             }
