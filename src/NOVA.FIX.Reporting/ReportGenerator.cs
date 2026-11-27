@@ -154,7 +154,7 @@ public sealed class ReportGenerator
 
     private static string BuildHtml(ReportPayload p)
     {
-        var e = WebUtility.HtmlEncode;
+        Func<string?, string> e = WebUtility.HtmlEncode;
         var sb = new StringBuilder();
         sb.AppendLine("<!DOCTYPE html><html><head><meta charset=\"utf-8\">");
         sb.AppendLine("<title>NOVA FIX Report</title>");

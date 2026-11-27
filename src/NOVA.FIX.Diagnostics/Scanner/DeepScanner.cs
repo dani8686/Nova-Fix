@@ -1,6 +1,7 @@
 using System.Text.Json;
 using NOVA.FIX.Core.Logging;
 using NOVA.FIX.Domain.Contracts;
+using NOVA.FIX.Domain.Enums;
 using NOVA.FIX.Domain.Models;
 using NOVA.FIX.Domain.Results;
 using DriveInfo = NOVA.FIX.Domain.Models.DriveInfo;
@@ -134,6 +135,9 @@ public sealed class DeepScanner
         T? Get<T>(string probe) where T : class
             => results.FirstOrDefault(r => r.ProbeName == probe && r.Success)?.Value as T;
 
+        T? GetNullable<T>(string probe) where T : struct
+            => results.FirstOrDefault(r => r.ProbeName == probe && r.Success)?.Value is T v ? v : null;
+
         var cpu = Get<CpuInfo>("cpu");
         var memory = Get<MemoryInfo>("memory");
         if (cpu is null || memory is null) return null;
@@ -149,7 +153,7 @@ public sealed class DeepScanner
             Volumes: Get<IReadOnlyList<VolumeInfo>>("volumes") ?? Array.Empty<VolumeInfo>(),
             Devices: Get<IReadOnlyList<DeviceEntry>>("devices") ?? Array.Empty<DeviceEntry>(),
             TpmStatus: Get<string?>("tpm"),
-            SecureBootEnabled: Get<bool?>("secureboot"),
+            SecureBootEnabled: GetNullable<bool>("secureboot"),
             BatteryStatus: Get<string?>("battery"),
             ProbeFailures: failures);
     }
@@ -269,11 +273,11 @@ public sealed class DeepScanner
                     Id = rule.Id,
                     Title = rule.Title,
                     Description = rule.Description,
-                    Severity = Enum.TryParse<Enums.FindingSeverity>(
+                    Severity = Enum.TryParse<FindingSeverity>(
                         rule.Severity, true, out var sev)
-                        ? sev : Enums.FindingSeverity.Low,
+                        ? sev : FindingSeverity.Low,
                     AffectedComponent = rule.Category,
-                    Confidence = Enums.ConfidenceLevel.High,
+                    Confidence = ConfidenceLevel.High,
                     Evidence = evidence
                         .Where(e => rule.EvidenceContains is null
                                    || rule.EvidenceContains.Any(c =>
