@@ -7,10 +7,16 @@ when its evidence appears here.
 
 | Suite | Runner | Last run | Result |
 |---|---|---|---|
-| NOVA.FIX.UnitTests | GitHub Actions windows-latest | — | not yet run |
-| NOVA.FIX.IntegrationTests | GitHub Actions windows-latest | — | not yet run |
-| NOVA.FIX.OfflineTests | Windows (network disabled) | — | not yet run |
-| NOVA.FIX.UITests | GitHub Actions windows-latest | — | not yet run |
+| NOVA.FIX.UnitTests | GitHub Actions windows-latest | 2026-11-27 (run 45920603634) | ✅ PASS |
+| NOVA.FIX.IntegrationTests | GitHub Actions windows-latest | 2026-11-27 (run 45920603634) | ✅ PASS |
+| NOVA.FIX.OfflineTests | GitHub Actions windows-latest | 2026-11-27 (run 45920603634) | ✅ PASS |
+| NOVA.FIX.UITests | GitHub Actions windows-latest | 2026-11-27 (run 45920603634) | ✅ PASS |
+
+Notes:
+- Offline suite here covers the offline-logic checks runnable in CI; the full
+  airplane-mode acceptance (spec §24) still requires a Windows machine with
+  outbound traffic blocked (`scripts/offline-acceptance.ps1`).
+- Publish self-contained win-x64 artifact: `novafix-win-x64` (~112 MB), same run.
 
 ## Offline acceptance checklist (spec §24)
 

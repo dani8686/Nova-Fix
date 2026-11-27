@@ -6,8 +6,16 @@
 
 ## Current phase
 
-Phase 1–3 complete: environment inspection, solution architecture scaffold,
-permanent project memory and creator metadata.
+**Phase 4 complete — first fully green CI (2026-11-27).**
+
+- All 16 src projects + App compile on GitHub Actions `windows-latest`.
+- All 4 test suites pass: Unit, Integration, Offline, UI (view-model).
+- Self-contained win-x64 publish artifact produced (~112 MB).
+- 20+ CI fix rounds resolved compile/API/XAML/test issues (see CHANGELOG).
+
+Remaining before release: staged GGUF model in packaging, Inno Setup run on a
+Windows machine, full airplane-mode acceptance via `scripts/offline-acceptance.ps1`,
+memory-doc final pass, FEATURE_MATRIX evidence fill.
 
 ## Environment notes (important for future sessions)
 
@@ -30,14 +38,13 @@ permanent project memory and creator metadata.
 
 ## In progress / next
 
-1. `NOVA.FIX.sln` + all `src/` projects (Domain, Core, Infrastructure, Diagnostics,
-   AI, Repair, Optimization, Drivers, Storage, Security, Reporting, Localization,
-   Recovery, App)
-2. Design system (themes, icons, fonts) + navigation shell
-3. Hardware/Windows inventory engines
-4. Performance monitoring
-5. Diagnostic rules engine + bundled rule database
-6. Local AI (llama.cpp binding, RAG, evidence correlation)
+1. ✅ Solution builds green in CI (run 45920603634, branch `arena/938745a0-nova-fix`)
+2. ✅ All 16 module ViewModels + Views + themes + About attribution
+3. ✅ Unit/Integration/Offline/UI test suites passing in CI
+4. ⬜ Stage bundled GGUF (`scripts/package-offline.ps1`) on a Windows prep machine
+5. ⬜ Inno Setup installer build + install verification
+6. ⬜ Airplane-mode acceptance run (spec §24) with `scripts/offline-acceptance.ps1`
+7. ⬜ FEATURE_MATRIX evidence fill from TEST_RESULTS; final memory-doc pass
 7. Repair workflows + allowlisted action registry
 8. Startup/Service/Driver/Storage modules
 9. Rescue & Restore, Offline Update Manager, Autopilot, Report Center
