@@ -151,14 +151,13 @@ public sealed class AutopilotEngine
                 continue;
             }
 
+            var proposal = ToProposal(step);
             if (step.Risk >= ActionRisk.High && confirmationCallback is not null)
             {
-                var proposal = ToProposal(step);
                 await confirmationCallback(proposal, ct).ConfigureAwait(false);
             }
 
             Report($"Executing: {step.Title}");
-            var proposal = ToProposal(step);
             var result = await _executor.ExecuteAsync(proposal, null, ct)
                 .ConfigureAwait(false);
             results.Add((step, result));
