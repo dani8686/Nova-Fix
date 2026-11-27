@@ -21,7 +21,7 @@ public sealed class QueryResult<T>
 }
 
 /// <summary>Result of executing a repair/optimization action (never faked).</summary>
-public sealed class OperationResult
+public sealed record OperationResult
 {
     public required string ActionId { get; init; }
     public Domain.Enums.OperationStatus Status { get; init; }

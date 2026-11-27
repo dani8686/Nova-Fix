@@ -3,6 +3,7 @@ using NOVA.FIX.Core.Logging;
 using NOVA.FIX.Domain.Contracts;
 using NOVA.FIX.Domain.Models;
 using NOVA.FIX.Domain.Results;
+using DriveInfo = NOVA.FIX.Domain.Models.DriveInfo;
 
 namespace NOVA.FIX.Diagnostics.Scanner;
 

@@ -1,6 +1,7 @@
 using System.Management;
 using NOVA.FIX.Core.Logging;
 using NOVA.FIX.Domain.Models;
+using DriveInfo = NOVA.FIX.Domain.Models.DriveInfo;
 
 namespace NOVA.FIX.Storage;
 

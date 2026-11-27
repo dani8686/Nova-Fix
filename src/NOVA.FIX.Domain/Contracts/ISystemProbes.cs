@@ -1,4 +1,5 @@
 using NOVA.FIX.Domain.Models;
+using DriveInfo = NOVA.FIX.Domain.Models.DriveInfo;
 using NOVA.FIX.Domain.Results;
 
 namespace NOVA.FIX.Domain.Contracts;

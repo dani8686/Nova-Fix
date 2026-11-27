@@ -1,3 +1,5 @@
+using NOVA.FIX.Domain.Enums;
+using NOVA.FIX.Domain.Models;
 namespace NOVA.FIX.Domain.Models;
 
 /// <summary>Local knowledge article used by the RAG engine.</summary>

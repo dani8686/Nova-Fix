@@ -1,3 +1,4 @@
+using NOVA.FIX.Domain.Results;
 using NOVA.FIX.Domain.Enums;
 
 namespace NOVA.FIX.Domain.Models;
