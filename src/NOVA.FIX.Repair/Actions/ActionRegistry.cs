@@ -85,7 +85,7 @@ public sealed class ActionRegistry : IActionRegistry
             new[] { "Component store healthy (run DISM first if not)" },
             "Administrator",
             "'Windows Resource Protection did not find any integrity violations.'",
-            "Replaced files are backed up by SFC in %WinDir%\WinSxS\Backup.",
+            "Replaced files are backed up by SFC in %WinDir%\\WinSxS\\Backup.",
             new[] { "SfcScanNow" });
 
         // --- Windows Search ---

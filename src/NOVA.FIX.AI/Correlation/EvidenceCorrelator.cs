@@ -100,13 +100,11 @@ public sealed class EvidenceCorrelator : IDiagnosticEngine
                 ? ConfidenceLevel.Confirmed
                 : ConfidenceLevel.Likely,
             Evidence = deviceProblems,
-            PossibleCauses =
-            {
+            PossibleCauses = new[] {
                 "Corrupted or partially installed driver",
                 "Device firmware incompatibility",
                 "Hardware fault",
-                "Resource conflict after hardware change",
-            },
+                "Resource conflict after hardware change" },
             RecommendedSolution =
                 "Open Driver Intelligence → locate the failing device → verify the signed " +
                 "local driver package → roll back or install the matching offline INF. " +
@@ -141,13 +139,11 @@ public sealed class EvidenceCorrelator : IDiagnosticEngine
             AffectedComponent = "Storage",
             Confidence = ConfidenceLevel.Confirmed,
             Evidence = lowSpace,
-            PossibleCauses =
-            {
+            PossibleCauses = new[] {
                 "Accumulated temporary files",
                 "Large forgotten downloads or installers",
                 "WinSxS/component store growth",
-                "Hibernation file or system restore allocation",
-            },
+                "Hibernation file or system restore allocation" },
             RecommendedSolution =
                 "Run Storage Guardian to review exact paths and sizes, then confirm a " +
                 "targeted cleanup. Do not empty unknown directories blindly.",
@@ -187,14 +183,12 @@ public sealed class EvidenceCorrelator : IDiagnosticEngine
             Severity = availableGb <= 1 ? FindingSeverity.Critical : FindingSeverity.Medium,
             AffectedComponent = "Memory",
             Confidence = ConfidenceLevel.Likely,
-            Evidence = { memEvidence },
-            PossibleCauses =
-            {
+            Evidence = new[] { memEvidence },
+            PossibleCauses = new[] {
                 "Memory-hungry background applications",
                 "Startup programs holding working sets",
                 "A memory leak in a long-running process",
-                "Insufficient RAM for the current workload",
-            },
+                "Insufficient RAM for the current workload" },
             RecommendedSolution =
                 "Use Performance Lab to identify top private-memory processes, then " +
                 "disable unnecessary startup entries in Startup Manager.",
@@ -227,12 +221,10 @@ public sealed class EvidenceCorrelator : IDiagnosticEngine
             AffectedComponent = "Windows Servicing",
             Confidence = ConfidenceLevel.Likely,
             Evidence = servicing,
-            PossibleCauses =
-            {
+            PossibleCauses = new[] {
                 "Interrupted update installation",
                 "Corrupted component store metadata",
-                "Third-party antivirus interfering with servicing",
-            },
+                "Third-party antivirus interfering with servicing" },
             RecommendedSolution =
                 "Run One-Click Repair → Windows Component Repair: DISM CheckHealth → " +
                 "ScanHealth → RestoreHealth, then SFC /scannow. Offline MSU packages can " +
@@ -266,13 +258,11 @@ public sealed class EvidenceCorrelator : IDiagnosticEngine
             AffectedComponent = "Windows Update",
             Confidence = ConfidenceLevel.Likely,
             Evidence = updateErrors,
-            PossibleCauses =
-            {
+            PossibleCauses = new[] {
                 "Corrupted update cache (SoftwareDistribution)",
                 "Stuck update service state",
                 "Insufficient disk space",
-                "Pending servicing requiring reboot",
-            },
+                "Pending servicing requiring reboot" },
             RecommendedSolution =
                 "Run One-Click Repair → Windows Update: diagnose service state, reset the " +
                 "update cache, then retry. Use Offline Update Manager for MSU/CAB packages.",
@@ -309,12 +299,10 @@ public sealed class EvidenceCorrelator : IDiagnosticEngine
             AffectedComponent = g.Key,
             Confidence = ConfidenceLevel.Likely,
             Evidence = g.Take(6).ToList(),
-            PossibleCauses =
-            {
+            PossibleCauses = new[] {
                 "Service crash-loop",
                 "Failing driver reset",
-                "Permission or dependency problem",
-            },
+                "Permission or dependency problem" },
             RecommendedSolution =
                 "Inspect the component in Service/Driver Manager, review its failure history, " +
                 "and apply the guided repair workflow for that component.",
