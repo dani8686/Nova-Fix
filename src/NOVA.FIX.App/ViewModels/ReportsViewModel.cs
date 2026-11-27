@@ -1,8 +1,11 @@
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows;
 using NOVA.FIX.Core.Mvvm;
 using NOVA.FIX.Core.Services;
 using NOVA.FIX.Diagnostics.Scanner;
 using NOVA.FIX.Domain.Models;
+using NOVA.FIX.Domain.Results;
 using NOVA.FIX.Reporting;
 
 namespace NOVA.FIX.App.ViewModels;
@@ -27,7 +30,7 @@ public sealed class ReportsViewModel : ViewModelBase
         _knowledge = c.Resolve<Domain.Contracts.IKnowledgeBase>();
         _llm = c.Resolve<Domain.Contracts.ILocalLanguageModel>();
 
-        Formats.AddRange(new[] { "TXT", "HTML", "JSON", "CSV" });
+        foreach (var f in new[] { "TXT", "HTML", "JSON", "CSV" }) Formats.Add(f);
         GenerateCommand = new AsyncRelayCommand(GenerateAsync);
     }
 

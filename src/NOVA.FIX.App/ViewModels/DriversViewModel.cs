@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.IO;
 using NOVA.FIX.Core.Mvvm;
 using NOVA.FIX.Core.Services;
 using NOVA.FIX.Drivers;

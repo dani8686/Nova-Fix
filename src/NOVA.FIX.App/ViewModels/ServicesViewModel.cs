@@ -1,4 +1,6 @@
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows;
 using NOVA.FIX.Core.Mvvm;
 using NOVA.FIX.Core.Services;
 using NOVA.FIX.Domain.Models;
