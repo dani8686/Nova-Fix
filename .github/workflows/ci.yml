@@ -68,23 +68,86 @@ jobs:
           }
 
       - name: Integration tests
-        run: >
-          dotnet test tests/NOVA.FIX.IntegrationTests/NOVA.FIX.IntegrationTests.csproj
-          -c Release --no-build --logger "trx;LogFileName=integration.trx" --logger "console;verbosity=normal"
-          --results-directory TestResults
-
+        shell: pwsh
+        run: |
+          dotnet test tests/NOVA.FIX.IntegrationTests/NOVA.FIX.IntegrationTests.csproj `
+            -c Release --no-build --logger "trx;LogFileName=integration.trx" `
+            --logger "console;verbosity=normal" --results-directory TestResults
+          if ($LASTEXITCODE -ne 0) {
+            $summary = "## Test failures`n"
+            Get-ChildItem TestResults -Recurse -Filter *.trx | ForEach-Object {
+              [xml]$trx = Get-Content $_.FullName -Raw
+              $ns = @{ t = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010" }
+              $failed = Select-Xml -Xml $trx -XPath "//t:UnitTestResult[@outcome='Failed']" -Namespace $ns
+              foreach ($r in $failed) {
+                $summary += "### FAILED: $($r.Node.testName)`n"
+                Write-Host "::error title=UnitTestFailed::$($r.Node.testName)"
+                $msg = Select-Xml -Xml $r.Node -XPath ".//t:Message" -Namespace $ns
+                foreach ($m in $msg) {
+                  $flat = $m.Node.InnerText.Replace("`n"," | ")
+                  Write-Host "::error title=UnitTestFailed::$($r.Node.testName) :: $flat"
+                  $summary += "``````n$($m.Node.InnerText)`n``````n"
+                }
+              }
+            }
+            Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value $summary
+            Write-Host $summary
+            exit 1
+          }
       - name: Offline acceptance tests
-        run: >
-          dotnet test tests/NOVA.FIX.OfflineTests/NOVA.FIX.OfflineTests.csproj
-          -c Release --no-build --logger "trx;LogFileName=offline.trx" --logger "console;verbosity=normal"
-          --results-directory TestResults
-
+        shell: pwsh
+        run: |
+          dotnet test tests/NOVA.FIX.OfflineTests/NOVA.FIX.OfflineTests.csproj `
+            -c Release --no-build --logger "trx;LogFileName=offline.trx" `
+            --logger "console;verbosity=normal" --results-directory TestResults
+          if ($LASTEXITCODE -ne 0) {
+            $summary = "## Test failures`n"
+            Get-ChildItem TestResults -Recurse -Filter *.trx | ForEach-Object {
+              [xml]$trx = Get-Content $_.FullName -Raw
+              $ns = @{ t = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010" }
+              $failed = Select-Xml -Xml $trx -XPath "//t:UnitTestResult[@outcome='Failed']" -Namespace $ns
+              foreach ($r in $failed) {
+                $summary += "### FAILED: $($r.Node.testName)`n"
+                Write-Host "::error title=UnitTestFailed::$($r.Node.testName)"
+                $msg = Select-Xml -Xml $r.Node -XPath ".//t:Message" -Namespace $ns
+                foreach ($m in $msg) {
+                  $flat = $m.Node.InnerText.Replace("`n"," | ")
+                  Write-Host "::error title=UnitTestFailed::$($r.Node.testName) :: $flat"
+                  $summary += "``````n$($m.Node.InnerText)`n``````n"
+                }
+              }
+            }
+            Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value $summary
+            Write-Host $summary
+            exit 1
+          }
       - name: UI view-model tests
-        run: >
-          dotnet test tests/NOVA.FIX.UITests/NOVA.FIX.UITests.csproj
-          -c Release --no-build --logger "trx;LogFileName=ui.trx" --logger "console;verbosity=normal"
-          --results-directory TestResults
-
+        shell: pwsh
+        run: |
+          dotnet test tests/NOVA.FIX.UITests/NOVA.FIX.UITests.csproj `
+            -c Release --no-build --logger "trx;LogFileName=ui.trx" `
+            --logger "console;verbosity=normal" --results-directory TestResults
+          if ($LASTEXITCODE -ne 0) {
+            $summary = "## Test failures`n"
+            Get-ChildItem TestResults -Recurse -Filter *.trx | ForEach-Object {
+              [xml]$trx = Get-Content $_.FullName -Raw
+              $ns = @{ t = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010" }
+              $failed = Select-Xml -Xml $trx -XPath "//t:UnitTestResult[@outcome='Failed']" -Namespace $ns
+              foreach ($r in $failed) {
+                $summary += "### FAILED: $($r.Node.testName)`n"
+                Write-Host "::error title=UnitTestFailed::$($r.Node.testName)"
+                $msg = Select-Xml -Xml $r.Node -XPath ".//t:Message" -Namespace $ns
+                foreach ($m in $msg) {
+                  $flat = $m.Node.InnerText.Replace("`n"," | ")
+                  Write-Host "::error title=UnitTestFailed::$($r.Node.testName) :: $flat"
+                  $summary += "``````n$($m.Node.InnerText)`n``````n"
+                }
+              }
+            }
+            Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value $summary
+            Write-Host $summary
+            exit 1
+          }
       - name: Publish self-contained x64
         run: >
           dotnet publish src/NOVA.FIX.App/NOVA.FIX.App.csproj
