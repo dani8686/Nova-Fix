@@ -40,10 +40,27 @@ jobs:
         run: dotnet build NOVA.FIX.sln -c Release --no-restore -p:PlatformTarget=x64
 
       - name: Unit tests
-        run: >
-          dotnet test tests/NOVA.FIX.UnitTests/NOVA.FIX.UnitTests.csproj
-          -c Release --no-build --logger "trx;LogFileName=unit.trx" --logger "console;verbosity=normal"
-          --results-directory TestResults
+        shell: pwsh
+        run: |
+          dotnet test tests/NOVA.FIX.UnitTests/NOVA.FIX.UnitTests.csproj `
+            -c Release --no-build --logger "trx;LogFileName=unit.trx" `
+            --logger "console;verbosity=normal" --results-directory TestResults
+          if ($LASTEXITCODE -ne 0) {
+            Get-ChildItem TestResults -Recurse -Filter *.trx | ForEach-Object {
+              Write-Host "==== $($_.FullName) ===="
+              [xml]$trx = Get-Content $_.FullName -Raw
+              $ns = @{ t = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010" }
+              $defResults = Select-Xml -Xml $trx -XPath "//t:UnitTestResult[@outcome='Failed']" -Namespace $ns
+              foreach ($r in $defResults) {
+                Write-Host "FAILED: $($r.Node.testName)"
+                $msg = Select-Xml -Xml $r.Node -XPath ".//t:Message" -Namespace $ns
+                foreach ($m in $msg) { Write-Host "  MSG: $($m.Node.InnerText)" }
+                $st = Select-Xml -Xml $r.Node -XPath ".//t:StackTrace" -Namespace $ns
+                foreach ($m in $st) { Write-Host "  STK: $($m.Node.InnerText)" }
+              }
+            }
+            exit 1
+          }
 
       - name: Integration tests
         run: >
