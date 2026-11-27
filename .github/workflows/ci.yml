@@ -53,8 +53,13 @@ jobs:
               $failed = Select-Xml -Xml $trx -XPath "//t:UnitTestResult[@outcome='Failed']" -Namespace $ns
               foreach ($r in $failed) {
                 $summary += "### FAILED: $($r.Node.testName)`n"
+                Write-Host "::error title=UnitTestFailed::$($r.Node.testName)"
                 $msg = Select-Xml -Xml $r.Node -XPath ".//t:Message" -Namespace $ns
-                foreach ($m in $msg) { $summary += "``````n$($m.Node.InnerText)`n``````n" }
+                foreach ($m in $msg) {
+                  $flat = $m.Node.InnerText.Replace("`n"," | ")
+                  Write-Host "::error title=UnitTestFailed::$($r.Node.testName) :: $flat"
+                  $summary += "``````n$($m.Node.InnerText)`n``````n"
+                }
               }
             }
             Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value $summary
