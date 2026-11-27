@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>NOVA.FIX.Autopilot</RootNamespace>
+    <AssemblyName>NOVA.FIX.Autopilot</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="NOVA.FIX.UnitTests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NOVA.FIX.Core\NOVA.FIX.Core.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Domain\NOVA.FIX.Domain.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Diagnostics\NOVA.FIX.Diagnostics.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.AI\NOVA.FIX.AI.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Repair\NOVA.FIX.Repair.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Optimization\NOVA.FIX.Optimization.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Reporting\NOVA.FIX.Reporting.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Recovery\NOVA.FIX.Recovery.csproj" />
+  </ItemGroup>
+
+</Project>

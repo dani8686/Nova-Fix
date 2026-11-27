@@ -1,0 +1,99 @@
+<UserControl x:Class="NOVA.FIX.App.Views.StorageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Border Grid.Row="0" Style="{StaticResource Card}">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+          <Button Style="{StaticResource PrimaryButton}" Content="Scan storage" Command="{Binding ScanCommand}" Margin="0,0,8,0"/>
+          <Button Style="{StaticResource PrimaryButton}" Content="Clean selected (with confirmation)"
+                  Command="{Binding CleanupCommand}"
+                  Background="{DynamicResource DangerBrush}"/>
+        </StackPanel>
+        <StackPanel>
+          <TextBlock Text="Storage Guardian — exact paths and sizes before any deletion" Style="{StaticResource H2}"/>
+          <TextBlock Text="{Binding StatusMessage}" Style="{StaticResource Muted}" Margin="0,4,0,0"/>
+        </StackPanel>
+      </DockPanel>
+    </Border>
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid Grid.Column="0" Margin="0,12,6,0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Style="{StaticResource Card}">
+          <StackPanel>
+            <TextBlock Text="Volumes" Style="{StaticResource H2}"/>
+            <ItemsControl ItemsSource="{Binding Volumes}" Margin="0,6,0,0">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Orientation="Horizontal" Margin="0,2">
+                    <TextBlock FontWeight="SemiBold" Text="{Binding Mount}"/>
+                    <TextBlock Text="{Binding Label}" Style="{StaticResource Muted}" Margin="6,0,0,0"/>
+                    <TextBlock Text="{Binding Free}" Style="{StaticResource Muted}" Margin="10,0,0,0"/>
+                    <TextBlock Text="/" Style="{StaticResource Muted}"/>
+                    <TextBlock Text="{Binding Size}" Style="{StaticResource Muted}"/>
+                    <Border Style="{StaticResource Badge}" Margin="10,0,0,0">
+                      <TextBlock Text="{Binding Status}" FontSize="10"
+                                 Foreground="{DynamicResource SuccessBrush}"/>
+                    </Border>
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,12,0,0">
+          <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Text="Disks" Style="{StaticResource H2}" Margin="0,0,0,6"/>
+            <ItemsControl ItemsSource="{Binding Disks}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Margin="0,3">
+                    <TextBlock Text="{Binding Model}" FontWeight="SemiBold"/>
+                    <TextBlock Style="{StaticResource Muted}">
+                      <Run Text="{Binding Kind, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding Interface, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding Size, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding Smart, Mode=OneWay}"/>
+                    </TextBlock>
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </DockPanel>
+        </Border>
+        <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,12,0,0">
+          <TextBlock Text="{Binding SenseText}" Style="{StaticResource Muted}"/>
+        </Border>
+      </Grid>
+      <Border Grid.Column="1" Style="{StaticResource Card}" Margin="6,12,0,0">
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Top" Text="Cleanup candidates (select to approve)" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+          <ListBox ItemsSource="{Binding Candidates}" BorderThickness="0" Background="Transparent"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal" Margin="0,3">
+                  <CheckBox IsChecked="{Binding Selected, UpdateSourceTrigger=PropertyChanged}"/>
+                  <TextBlock Text="{Binding FullPath}" FontFamily="Consolas" FontSize="11"
+                             TextWrapping="Wrap" Margin="6,0,0,0"/>
+                  <TextBlock Text="{Binding SizeDisplay}" Style="{StaticResource Muted}"
+                             Margin="8,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DockPanel>
+      </Border>
+    </Grid>
+  </Grid>
+</UserControl>

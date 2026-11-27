@@ -1,0 +1,178 @@
+<Window x:Class="NOVA.FIX.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:NOVA.FIX.App.ViewModels"
+        Title="NOVA FIX — Diagnose. Repair. Optimize. Verify."
+        Width="1280" Height="800" MinWidth="1024" MinHeight="680"
+        WindowStartupLocation="CenterScreen"
+        FlowDirection="{Binding FlowDirection, FallbackValue=LeftToRight}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ============ SIDEBAR ============ -->
+        <Border Grid.Column="0" Background="{DynamicResource SidebarBrush}">
+            <DockPanel>
+                <!-- Brand -->
+                <StackPanel DockPanel.Dock="Top" Margin="16,18,16,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="36" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Width="34" Height="34" CornerRadius="9"
+                                Background="{DynamicResource AccentGradient}">
+                            <TextBlock Text="N" FontSize="17" FontWeight="Bold"
+                                       Foreground="#0B0F14"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                            <TextBlock Text="{Binding Title}" FontSize="15"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource TextPrimaryBrush}" />
+                            <TextBlock Text="{Binding Tagline}" FontSize="9.5"
+                                       Foreground="{DynamicResource TextSecondaryBrush}" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Navigation -->
+                <ScrollViewer DockPanel.Dock="Bottom" VerticalScrollBarVisibility="Auto"
+                              MaxHeight="420" Margin="0,0,0,8">
+                    <StackPanel>
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     IsChecked="True" Command="{Binding NavigateCommand}"
+                                     Parameter="overview" Header="System Overview"
+                                     Content="◉" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="scanner" Header="Deep Scanner"
+                                     Content="⌕" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="detective" Header="AI Problem Detective"
+                                     Content="🔎" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="repair" Header="One-Click Repair"
+                                     Content="🛠" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="performance" Header="Performance Lab"
+                                     Content="📈" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="startup" Header="Startup Manager"
+                                     Content="🚀" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="services" Header="Service Manager"
+                                     Content="⚙" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="drivers" Header="Driver Intelligence"
+                                     Content="🔌" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="storage" Header="Storage Guardian"
+                                     Content="💾" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="compatibility" Header="Windows Compatibility"
+                                     Content="🪟" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="rescue" Header="Rescue &amp; Restore"
+                                     Content="🛟" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="reports" Header="Report Center"
+                                     Content="📄" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="autopilot" Header="NOVA Autopilot"
+                                     Content="✈" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="updates" Header="Offline Updates"
+                                     Content="📦" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="ai" Header="Local AI Settings"
+                                     Content="🧠" />
+                        <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
+                                     Command="{Binding NavigateCommand}"
+                                     Parameter="settings" Header="Settings &amp; About"
+                                     Content="ℹ" />
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Footer: offline badge + creator attribution -->
+                <StackPanel DockPanel.Dock="Bottom" Margin="14,4,14,6">
+                    <Border Style="{StaticResource Badge}" HorizontalAlignment="Stretch">
+                        <TextBlock Text="● OFFLINE — no network required"
+                                   FontSize="10.5" Foreground="{DynamicResource SuccessBrush}"
+                                   HorizontalAlignment="Center" />
+                    </Border>
+                    <TextBlock Text="{Binding CreatorLine}" FontSize="9.5"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
+                               Margin="0,6,0,0" TextWrapping="Wrap" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- ============ CONTENT ============ -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Top bar -->
+            <Border Grid.Row="0" Background="{DynamicResource BackgroundBrush}"
+                    Padding="22,14" BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,0,0,1">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <TextBlock Text="{Binding CurrentHeader}" Style="{StaticResource H1}" />
+                        <Border Style="{StaticResource Badge}" Margin="14,6,0,0"
+                                VerticalAlignment="Center">
+                            <TextBlock Text="{Binding CurrentMode}" FontSize="11"
+                                       Foreground="{DynamicResource PurpleBrush}" />
+                        </Border>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <Button Style="{StaticResource GhostButton}" Margin="0,0,8,0"
+                                Command="{Binding ToggleThemeCommand}"
+                                Content="{Binding ThemeToggleLabel}" />
+                        <Button Style="{StaticResource GhostButton}"
+                                Command="{Binding ToggleLanguageCommand}"
+                                Content="{Binding LanguageToggleLabel}" />
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- Page host -->
+            <ContentControl Grid.Row="1" Content="{Binding CurrentPage}"
+                            Margin="22,16" Focusable="False" />
+
+            <!-- Status bar -->
+            <Border Grid.Row="2" Background="{DynamicResource SidebarBrush}"
+                    Padding="22,7" BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,1,0,0">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Left" Text="{Binding StatusMessage}"
+                               Style="{StaticResource Muted}" />
+                    <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right"
+                               Style="{StaticResource Muted}"
+                               Text="{Binding VersionLine}" />
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

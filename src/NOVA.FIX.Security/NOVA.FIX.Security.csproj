@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>NOVA.FIX.Security</RootNamespace>
+    <AssemblyName>NOVA.FIX.Security</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NOVA.FIX.Core\NOVA.FIX.Core.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Domain\NOVA.FIX.Domain.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Infrastructure\NOVA.FIX.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

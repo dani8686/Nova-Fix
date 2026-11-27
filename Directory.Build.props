@@ -1,0 +1,31 @@
+<Project>
+
+  <!--
+    NOVA FIX — shared build metadata for every project in the solution.
+    Creator attribution lives in src/NOVA.FIX.Core/Branding/CreatorInformation.cs
+    and must stay consistent with the values below (enforced by unit tests).
+  -->
+  <PropertyGroup>
+    <!-- Windows-only product: every project targets the Windows desktop TFM. -->
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <!-- Allows building from non-Windows CI agents when needed. -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <Deterministic>true</Deterministic>
+    <Version>2.0.0</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <Company>Danial Mousavi</Company>
+    <Product>NOVA FIX</Product>
+    <Authors>Danial Mousavi</Authors>
+    <Copyright>Copyright © 2026 Danial Mousavi</Copyright>
+    <AssemblyTitle>NOVA FIX</AssemblyTitle>
+    <NeutralLanguage>en</NeutralLanguage>
+    <SatelliteResourceLanguages>en;fa</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+</Project>

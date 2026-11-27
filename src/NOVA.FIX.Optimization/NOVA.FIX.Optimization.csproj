@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>NOVA.FIX.Optimization</RootNamespace>
+    <AssemblyName>NOVA.FIX.Optimization</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="8.0.0" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NOVA.FIX.Core\NOVA.FIX.Core.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Domain\NOVA.FIX.Domain.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Diagnostics\NOVA.FIX.Diagnostics.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Infrastructure\NOVA.FIX.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

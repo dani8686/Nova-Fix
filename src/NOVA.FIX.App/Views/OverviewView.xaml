@@ -1,0 +1,106 @@
+<UserControl x:Class="NOVA.FIX.App.Views.OverviewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="clr-namespace:NOVA.FIX.App.Views">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+        <StackPanel>
+            <!-- Charts row -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Style="{StaticResource Card}">
+                    <DockPanel>
+                        <DockPanel DockPanel.Dock="Top">
+                            <Button DockPanel.Dock="Right"
+                                    Command="{Binding PauseResumeCommand}" Padding="10,4">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource GhostButton}">
+                                        <Setter Property="Content" Value="Pause" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsPaused}" Value="True">
+                                                <Setter Property="Content" Value="Resume" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <TextBlock Text="CPU" Style="{StaticResource H2}" />
+                        </DockPanel>
+                        <TextBlock Text="{Binding CpuText}" FontSize="26" FontWeight="Bold"
+                                   Foreground="{DynamicResource AccentBrush}"
+                                   VerticalAlignment="Center" />
+                        <views:SparklineControl Series="{Binding CpuHistory}"
+                                                Stroke="{DynamicResource AccentBrush}"
+                                                Height="54" Margin="0,8,0,0" />
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="1" Margin="12,0,0,0" Style="{StaticResource Card}">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Text="Memory" Style="{StaticResource H2}" />
+                        <TextBlock Text="{Binding RamText}" FontSize="26" FontWeight="Bold"
+                                   Foreground="{DynamicResource PurpleBrush}"
+                                   VerticalAlignment="Center" />
+                        <views:SparklineControl Series="{Binding RamHistory}"
+                                                Stroke="{DynamicResource PurpleBrush}"
+                                                Height="54" Margin="0,8,0,0" />
+                    </DockPanel>
+                </Border>
+            </Grid>
+
+            <!-- Second row -->
+            <Grid Margin="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Disk" Style="{StaticResource H2}" />
+                        <TextBlock Text="{Binding DiskText}" Style="{StaticResource Muted}"
+                                   Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Margin="12,0,0,0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="GPU" Style="{StaticResource H2}" />
+                        <TextBlock Text="{Binding GpuText}" Style="{StaticResource Muted}"
+                                   Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Margin="12,0,0,0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Battery" Style="{StaticResource H2}" />
+                        <TextBlock Text="{Binding BatteryText}" Style="{StaticResource Muted}"
+                                   Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- System row -->
+            <Grid Margin="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Windows" Style="{StaticResource H2}" />
+                        <TextBlock Text="{Binding WindowsText}" Style="{StaticResource Muted}"
+                                   Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Margin="12,0,0,0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Uptime" Style="{StaticResource H2}" />
+                        <TextBlock Text="{Binding UptimeText}" FontSize="18" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SuccessBrush}"
+                                   Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,127 @@
+[
+  {
+    "Id": "rule.low-disk-system",
+    "Title": "System volume low on space",
+    "Description": "The Windows system volume (C:) has less than 10% free space, which blocks updates, degrades performance and can corrupt user profiles.",
+    "Category": "Storage",
+    "Severity": "High",
+    "Enabled": true,
+    "EvidenceContains": ["Low free space on C:"],
+    "EvidenceNotContains": [],
+    "PossibleCauses": [
+      "Accumulated temporary files",
+      "Windows Update cache growth",
+      "Hibernation file and restore points",
+      "Large forgotten downloads"
+    ],
+    "Recommendation": "Open Storage Guardian, review exact paths and sizes, and confirm a targeted cleanup of temporary files only.",
+    "Risks": "Cleanup permanently deletes listed files; review the list carefully before approving.",
+    "Verification": "Free space on C: returns to at least 15%."
+  },
+  {
+    "Id": "rule.device-errors",
+    "Title": "Devices with problem codes",
+    "Description": "One or more devices report a non-zero ConfigManagerErrorCode in Device Manager.",
+    "Category": "Devices",
+    "Severity": "Medium",
+    "Enabled": true,
+    "EvidenceContains": ["with problems"],
+    "EvidenceNotContains": [],
+    "PossibleCauses": [
+      "Corrupted or partially installed driver",
+      "Device firmware incompatibility",
+      "Hardware fault"
+    ],
+    "Recommendation": "Open Driver Intelligence, locate the failing device, verify the signed local driver package, then roll back or install the matching offline INF.",
+    "Risks": "Installing an incompatible driver can break the device; NOVA FIX never installs unsigned or mismatched drivers automatically.",
+    "Verification": "Device Manager shows status OK with no problem code."
+  },
+  {
+    "Id": "rule.memory-pressure",
+    "Title": "Low available memory at scan time",
+    "Description": "Available RAM is at or below 20% of total during the scan, indicating heavy memory pressure and likely paging.",
+    "Category": "Performance",
+    "Severity": "Medium",
+    "Enabled": true,
+    "EvidenceContains": ["GB available"],
+    "EvidenceNotContains": [],
+    "PossibleCauses": [
+      "Memory-hungry background applications",
+      "Startup programs holding working sets",
+      "A memory leak in a long-running process"
+    ],
+    "Recommendation": "Use Performance Lab to identify top private-memory processes, then disable unnecessary startup entries.",
+    "Risks": "Disabling a startup entry does not uninstall anything and is reversible.",
+    "Verification": "After restart and 2 minutes of idle, available RAM is above 20%."
+  },
+  {
+    "Id": "rule.activation-unknown",
+    "Title": "Windows activation status not readable",
+    "Description": "The activation status could not be read in the current user context (often requires elevation).",
+    "Category": "Windows",
+    "Severity": "Informational",
+    "Enabled": true,
+    "EvidenceContains": ["Activation status not readable"],
+    "EvidenceNotContains": [],
+    "PossibleCauses": [
+      "Standard user session without elevation"
+    ],
+    "Recommendation": "Run NOVA FIX as administrator to read activation status, or check Settings > Activation manually.",
+    "Risks": "None — informational only.",
+    "Verification": "Activation status displays a definite value on an elevated run."
+  },
+  {
+    "Id": "rule.defender-disabled",
+    "Title": "Defender real-time protection disabled",
+    "Description": "Registry evidence shows Windows Defender real-time protection is turned off.",
+    "Category": "Security",
+    "Severity": "High",
+    "Enabled": true,
+    "EvidenceContains": ["DISABLED (registry evidence)"],
+    "EvidenceNotContains": [],
+    "PossibleCauses": [
+      "Third-party antivirus replaced Defender",
+      "Manual or policy disablement",
+      "Malware interference"
+    ],
+    "Recommendation": "Inspect protection status in One-Click Repair → Defender. If no third-party antivirus is present, re-enable real-time protection in Windows Security.",
+    "Risks": "Re-enabling protection may conflict with a third-party antivirus — verify before acting.",
+    "Verification": "Defender status reports real-time protection enabled."
+  },
+  {
+    "Id": "rule.secureboot-off",
+    "Title": "Secure Boot disabled",
+    "Description": "Secure Boot is reported as disabled on this system.",
+    "Category": "Security",
+    "Severity": "Low",
+    "Enabled": true,
+    "EvidenceContains": ["Secure Boot: False", "secureboot"],
+    "EvidenceNotContains": [],
+    "PossibleCauses": [
+      "Disabled in firmware for dual-boot or compatibility",
+      "Legacy BIOS mode in use",
+      "Custom bootloader"
+    ],
+    "Recommendation": "If no dual-boot or legacy requirements exist, enable Secure Boot in UEFI firmware settings. NOVA FIX never modifies BIOS settings.",
+    "Risks": "Changing firmware settings is out of scope for NOVA FIX — do it manually and know your firmware password.",
+    "Verification": "msinfo32 reports Secure Boot State: On."
+  },
+  {
+    "Id": "rule.probe-failures",
+    "Title": "One or more diagnostic probes failed",
+    "Description": "Some probes could not collect data on this system. Each failure is listed with its reason.",
+    "Category": "Diagnostics",
+    "Severity": "Informational",
+    "Enabled": true,
+    "EvidenceContains": ["Probe failed:"],
+    "EvidenceNotContains": [],
+    "PossibleCauses": [
+      "Access denied without elevation",
+      "WMI class not present on this Windows edition",
+      "Hardware sensor not exposed by the vendor"
+    ],
+    "Recommendation": "Re-run the scan as administrator for full coverage. Failed probes never block the rest of the scan.",
+    "Risks": "None — this is honest reporting of collection limits.",
+    "Verification": "Probe failures list is empty after an elevated run."
+  }
+]

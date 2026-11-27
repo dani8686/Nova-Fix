@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>NOVA.FIX.Core</RootNamespace>
+    <AssemblyName>NOVA.FIX.Core</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NOVA.FIX.Domain\NOVA.FIX.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

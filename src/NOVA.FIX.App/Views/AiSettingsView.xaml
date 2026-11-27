@@ -1,0 +1,50 @@
+<UserControl x:Class="NOVA.FIX.App.Views.AiSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel MaxWidth="760" HorizontalAlignment="Left">
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="Local AI model" Style="{StaticResource H1}"/>
+          <TextBlock Text="{Binding StatusText}" Style="{StaticResource Muted}" Margin="0,8,0,0"
+                     TextWrapping="Wrap"/>
+          <WrapPanel Margin="0,12,0,0">
+            <Button Style="{StaticResource PrimaryButton}" Content="Load model (CPU)"
+                    Command="{Binding LoadCommand}" Margin="0,0,8,0"/>
+            <Button Style="{StaticResource GhostButton}" Content="Unload"
+                    Command="{Binding UnloadCommand}"/>
+          </WrapPanel>
+          <TextBlock Text="{Binding ModelsDirInfo}" Style="{StaticResource Muted}" Margin="0,12,0,0"/>
+        </StackPanel>
+      </Border>
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="Model profile" Style="{StaticResource H2}"/>
+          <ComboBox ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile}"
+                    Width="180" HorizontalAlignment="Left" Margin="0,8,0,0"/>
+          <TextBlock Text="{Binding ProfileHint}" Style="{StaticResource Muted}" Margin="0,8,0,0"/>
+        </StackPanel>
+      </Border>
+      <Border Style="{StaticResource Card}">
+        <StackPanel>
+          <TextBlock Text="Resource controls" Style="{StaticResource H2}"/>
+          <CheckBox Content="Enable AI interpretation (off = deterministic only)"
+                    IsChecked="{Binding AiEnabled}" Margin="0,8,0,0"/>
+          <CheckBox Content="Allow background analysis"
+                    IsChecked="{Binding BackgroundAnalysis}" Margin="0,6,0,0"/>
+          <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <TextBlock Text="Max context tokens:" VerticalAlignment="Center"/>
+            <TextBox Width="90" Margin="8,0,0,0"
+                     Text="{Binding MaxContextTokens, UpdateSourceTrigger=PropertyChanged}"/>
+          </StackPanel>
+          <TextBlock Text="AI never has shell access. All repairs go through the allowlisted action registry."
+                     Style="{StaticResource Muted}" Margin="0,12,0,0"
+                     Foreground="{DynamicResource WarningBrush}"/>
+        </StackPanel>
+      </Border>
+      <Border Style="{StaticResource Card}">
+        <TextBlock Text="{Binding KnowledgeInfo}" Style="{StaticResource Muted}" TextWrapping="Wrap"/>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

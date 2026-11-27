@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>NOVA.FIX.Recovery</RootNamespace>
+    <AssemblyName>NOVA.FIX.Recovery</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NOVA.FIX.Core\NOVA.FIX.Core.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Domain\NOVA.FIX.Domain.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Infrastructure\NOVA.FIX.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

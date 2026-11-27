@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>NOVA.FIX.Updates</RootNamespace>
+    <AssemblyName>NOVA.FIX.Updates</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.EventLog" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="NOVA.FIX.UnitTests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NOVA.FIX.Core\NOVA.FIX.Core.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Domain\NOVA.FIX.Domain.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Infrastructure\NOVA.FIX.Infrastructure.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Security\NOVA.FIX.Security.csproj" />
+  </ItemGroup>
+
+</Project>

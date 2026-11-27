@@ -1,0 +1,32 @@
+{
+  "version": "2026.11",
+  "buildDate": "2026-11-26",
+  "source": "NOVA FIX bundled offline compatibility reference",
+  "disclaimer": "This is a bundled offline snapshot, not live information. It may be outdated; check Offline Updates for newer compatibility packs.",
+  "windows11Requirements": {
+    "tpm": "2.0 required (firmware TPM or Intel PTT / AMD fTPM)",
+    "secureBoot": "Required (UEFI Secure Boot capable and enabled)",
+    "firmware": "UEFI (legacy CSM/BIOS boot not supported)",
+    "ram": "4 GB minimum, 8 GB recommended",
+    "storage": "64 GB minimum",
+    "cpu": "64-bit 1 GHz+ dual-core on the supported list (generally 8th-gen Intel Core or newer, AMD Ryzen 2000 or newer)",
+    "display": "DirectX 12 capable, WDDM 2.0 driver",
+    "internet": "Required only for initial setup and account (out of scope for NOVA FIX offline checks)"
+  },
+  "knownNotes": [
+    {
+      "id": "note-7th-gen-intel",
+      "appliesTo": "Intel 7th generation Core (Kaby Lake), e.g. i7-7820HQ",
+      "text": "7th-generation Intel Core CPUs are generally NOT on Microsoft's Windows 11 supported CPU list. Systems such as the Dell Precision 7520 (i7-7xxx) will fail the official compatibility check. NOVA FIX never bypasses this check silently; it reports the bundled reference verdict with its date."
+    },
+    {
+      "id": "note-dell-7520",
+      "appliesTo": "Dell Precision 7520",
+      "text": "Shipped with Windows 10; TPM 2.0 present on most configurations; BIOS updates available as signed packages (import via Offline Update Manager). Quadro driver packages should be kept locally for offline reinstall."
+    }
+  ],
+  "servicePackLevels": {
+    "windows10": "22H2 (final feature update)",
+    "windows11": "24H2 baseline in this bundle"
+  }
+}

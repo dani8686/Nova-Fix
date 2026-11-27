@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>NOVA.FIX.App</RootNamespace>
+    <AssemblyName>NOVA.FIX</AssemblyName>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>..\..\assets\icons\novafix.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <StartupObject>NOVA.FIX.App.App</StartupObject>
+    <AssemblyTitle>NOVA FIX</AssemblyTitle>
+    <Description>NOVA FIX — Diagnose. Repair. Optimize. Verify.</Description>
+    <Product>NOVA FIX</Product>
+    <Company>Danial Mousavi</Company>
+    <Authors>Danial Mousavi</Authors>
+    <Copyright>Copyright © 2026 Danial Mousavi</Copyright>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NOVA.FIX.Core\NOVA.FIX.Core.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Domain\NOVA.FIX.Domain.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Infrastructure\NOVA.FIX.Infrastructure.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Diagnostics\NOVA.FIX.Diagnostics.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.AI\NOVA.FIX.AI.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Repair\NOVA.FIX.Repair.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Optimization\NOVA.FIX.Optimization.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Drivers\NOVA.FIX.Drivers.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Storage\NOVA.FIX.Storage.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Security\NOVA.FIX.Security.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Reporting\NOVA.FIX.Reporting.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Localization\NOVA.FIX.Localization.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Recovery\NOVA.FIX.Recovery.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Updates\NOVA.FIX.Updates.csproj" />
+    <ProjectReference Include="..\NOVA.FIX.Autopilot\NOVA.FIX.Autopilot.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Offline data files are copied next to the executable. -->
+    <Content Include="..\..\data\**\*.*" LinkBase="data" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\docs\offline\**\*.*" LinkBase="docs" CopyToOutputDirectory="PreserveNewest" Condition="Exists('..\..\docs\offline')" />
+  </ItemGroup>
+
+</Project>

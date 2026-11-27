@@ -1,0 +1,132 @@
+[
+  {
+    "Id": "kb:driver-troubleshooting-basics",
+    "Title": "Driver Troubleshooting Basics (Offline)",
+    "Category": "Drivers",
+    "Content": "A device with a problem code in Device Manager almost always needs one of: (1) rollback to the previous driver if the problem started after an update, (2) installation of a matching signed INF from the local repository, (3) re-enabling the device if it was disabled. Hardware IDs (PCI\\VEN_...&DEV_...) uniquely identify the device; never install a package whose hardware ID list does not contain the device's ID. Boxed driver packages extracted from OEM archives must pass signature verification before installation. Windows DriverStore (C:\\Windows\\System32\\DriverStore\\FileRepository) holds all staged drivers; pnputil /enum-drivers lists them. NOVA FIX never installs unsigned or incompatible drivers automatically.",
+    "Tags": "driver,device manager,problem code,INF,DriverStore,pnputil,hardware id",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  },
+  {
+    "Id": "kb:memory-pressure-basics",
+    "Title": "Memory Pressure Diagnosis",
+    "Category": "Performance",
+    "Content": "Symptoms of memory pressure: application hangs, disk light constantly on (paging), 'Your computer is low on memory' dialogs. Diagnosis order: (1) check available RAM in Performance Lab, (2) identify top private-bytes processes, (3) check startup entries keeping working sets alive after logon, (4) look for leak patterns where a process's private memory grows monotonically over hours. Remedies: disable unnecessary startup entries (reversible), close background apps, add RAM if the machine is at its limit. Windows SuperFetch/SysMain preloads data; disabling it rarely helps on SSDs. NOVA FIX does not recommend killing processes automatically.",
+    "Tags": "memory,RAM,paging,working set,startup,performance",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  },
+  {
+    "Id": "kb:windows-update-cache-reset",
+    "Title": "Windows Update Cache Reset (Offline Procedure)",
+    "Category": "Windows Update",
+    "Content": "When updates fail with 0x80070002, 0x80070003, 0x8024402c or similar: (1) verify free space (>= 5 GB), (2) check wuauserv (Windows Update) and bits services are running, (3) stop wuauserv, bits and usosvc, (4) delete ONLY the contents of C:\\Windows\\SoftwareDistribution\\Download (not the folder itself, not the DataStore), (5) restart the services, (6) retry the update check. The cache re-downloads automatically; installed updates are unaffected. If failures persist with 0x800fxxxx codes the component store itself is corrupt — run DISM CheckHealth/ScanHealth/RestoreHealth first, then SFC.",
+    "Tags": "windows update,cache,SoftwareDistribution,0x8007,0x800f,wuauserv,bits",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  },
+  {
+    "Id": "kb:windows-update-error-0x800f0805",
+    "Title": "Windows Update Error 0x800f0805 / Component Store Corruption",
+    "Category": "Windows Update",
+    "Content": "Error 0x800f0805 (CBS_E_INVALID_XML) and related 0x800f08xx codes indicate component store metadata corruption. Offline repair sequence: (1) DISM /Online /Cleanup-Image /CheckHealth — quick check, no changes; (2) DISM /Online /Cleanup-Image /ScanHealth — deep scan, 10-20 minutes, no changes; (3) DISM /Online /Cleanup-Image /RestoreHealth — repairs using local component store; if it needs a source, provide a local install.wim or MSU via /Source; (4) sfc /scannow — repairs protected system files from the (now healthy) store. Always reboot between RestoreHealth and retrying the failed update. RestoreHealth can take 30-45 minutes on older hardware such as a 7th-generation Core i7.",
+    "Tags": "DISM,SFC,0x800f0805,component store,RestoreHealth,ScanHealth,CheckHealth",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  },
+  {
+    "Id": "kb:storage-cleanup-safety",
+    "Title": "Safe Storage Cleanup Rules",
+    "Category": "Storage",
+    "Content": "Safe-to-clean locations (after confirmation): %TEMP% (user), C:\\Windows\\Temp, C:\\Users\\<name>\\AppData\\Local\\Temp, C:\\Windows\\SoftwareDistribution\\Download (with update services stopped). NEVER auto-delete: user profile roots, Documents/Desktop/Downloads, Program Files, C:\\Windows itself, browser profile data without explicit selection, anything outside temp/cache paths. Always show exact path + size before deleting. hiberfil.sys (hibernation) and pagefile.sys are system-managed — disabling hibernation via powercfg /h off is a user decision, not an automatic cleanup. WinSxS can only be reduced safely via DISM /StartComponentCleanup, never by deleting files directly.",
+    "Tags": "cleanup,temp,storage,safety,disk space,hibernation,WinSxS",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  },
+  {
+    "Id": "kb:windows-search-index-rebuild",
+    "Title": "Windows Search Index Problems",
+    "Category": "Windows Search",
+    "Content": "Symptoms: Start menu finds nothing, Explorer search is empty or extremely slow, SearchUI crashes. Diagnosis: check WSearch service state and its dependents (OneSyncSvc), verify the index database folder %ProgramData%\\Microsoft\\Search\\Data exists and has free space. Rebuild procedure: stop WSearch, optionally move/rename the Data folder (it regrows), restart WSearch — indexing resumes in background. Rebuild can take hours on large disks and CPU usage rises meanwhile; this is normal. Search results are not user data; losing the index is safe. If WSearch fails to start with error 1067 repeatedly, check the Application event log for SearchIndexer faulting modules.",
+    "Tags": "search,index,WSearch,SearchIndexer,start menu,Explorer",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  },
+  {
+    "Id": "kb:service-management-safety",
+    "Title": "Windows Service Management Safety",
+    "Category": "Services",
+    "Content": "Critical services that must NEVER be disabled automatically: RpcSs, DcomLaunch, LanmanWorkstation, LanmanServer, Dnscache, Dhcp, NlaSvc, EventLog, PlugPlay, Power, SamSs, CryptSvc, BFE, MpsSvc, Schedule, ProfSvc, UserManager, WinDefend, EventSystem, Winmgmt. Disabling any of these can make Windows unbootable or break networking/security. Safe practice: (1) snapshot current start type before any change, (2) change Automatic → Manual rather than Disabled to test, (3) verify the system boots and core functions work, (4) keep the snapshot for rollback. Services with 'Delayed Start' reduce boot contention. A service consuming CPU at idle may be doing legitimate work — check its failure history and description before judging it defective.",
+    "Tags": "services,critical,sc.exe,start type,snapshot,rollback",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  },
+  {
+    "Id": "kb:network-dns-tcpip-repair",
+    "Title": "Network Repair Sequence (Offline)",
+    "Category": "Network",
+    "Content": "Ordered, reversible network repair: (1) ipconfig /flushdns — clears stale DNS cache, zero risk; (2) inspect adapters (Get-NetIPConfiguration) for missing gateways; (3) reset Winsock (netsh winsock reset) — requires reboot; VPN clients and virtual adapters that registered LSPs may need reinstallation; (4) reset TCP/IP (netsh int ip reset) — also requires reboot; (5) driver-level issues: check the Wi-Fi adapter events in Event Log (driver reset, association failures). Steps 3-4 are High risk because of VPN/virtual adapter side effects — always warn the user first. DNS client service (Dnscache) should not be disabled.",
+    "Tags": "network,DNS,Winsock,TCP/IP,ipconfig,netsh,adapter",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  },
+  {
+    "Id": "kb:event-id-41-kernel-power",
+    "Title": "Event ID 41 (Kernel-Power) Unexpected Shutdown",
+    "Category": "Event Log",
+    "Content": "Event 41 in the System log means Windows restarted without a clean shutdown. Correlate with: Event 6008 (unexpected shutdown), Event 1074 (user/app initiated restart), BugCheck events (1001) for BSODs. Common causes: power loss/overheating (check thermal events), BSOD (look for BugCheck code), frozen system forced off by holding power button, critical updates restarting the machine. Diagnosis should check: recent thermal events, memory diagnostics results, disk S.M.A.R.T. status, and whether the pattern repeats (weekly pattern suggests scheduled tasks or thermal cycling). Do not blame software without corroborating evidence.",
+    "Tags": "event 41,kernel-power,shutdown,6008,BugCheck,BSOD",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  },
+  {
+    "Id": "kb:event-7000-series-service-failures",
+    "Title": "Service Control Manager Events 7000/7001/7023/7026",
+    "Category": "Event Log",
+    "Content": "7000: service failed to start (check ImagePath exists — orphaned service). 7001: dependent service failed. 7023: service terminated with error (see error code). 7026: service dependencies failed to load. Repeated 7000 events for the same service indicate: missing executable (uninstalled app left service registered), dependency chain break, or corrupted service binary. Remediation: verify ImagePath points to an existing file; if the application was uninstalled, remove the orphaned service registration (requires admin and confirmation); fix dependencies with sc config depend=. Never blanket-disable a service because it failed — identify whether the dependency it needs should be restored instead.",
+    "Tags": "event 7000,7001,7023,7026,service control manager,orphaned service",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  },
+  {
+    "Id": "kb:dell-precision-7520-notes",
+    "Title": "Dell Precision 7520 Mobile Workstation Notes",
+    "Category": "Hardware",
+    "Content": "Dell Precision 7520: 7th-generation Intel Core i7 (Kaby Lake-H, e.g. i7-7820HQ) or Xeon E3, up to 64 GB DDR4 SODIMM, Quadro M1200/M2200 or HD 630 graphics, NVMe/SATA M.2 + 2.5 bays, Thunderbolt 3, 15.6 display. Known maintenance points: (1) BIOS updates from Dell support — install only signed packages from local media offline; (2) Intel ME driver updates can fix sleep/Thunderbolt issues; (3) Quadro driver packages are large — keep a local signed copy for offline reinstall; (4) TPM 2.0 present (needed for Windows 11); Secure Boot enabled by default in recent BIOS; (5) Dell SupportAssist OS Recovery can restore the factory image but wipes data — never triggered by NOVA FIX; (6) battery calibration issues cause false 'plugged in, not charging' reports — check BIOS power diagnostics first.",
+    "Tags": "Dell,Precision,7520,Kaby Lake,Quadro,workstation,hardware",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  },
+  {
+    "Id": "kb:windows-11-compatibility-check",
+    "Title": "Windows 11 Compatibility Requirements (Bundled Reference)",
+    "Category": "Compatibility",
+    "Content": "Windows 11 offline requirements (as of the bundled database date): TPM 2.0 required (firmware TPM or Intel PTT/AMD fTPM), Secure Boot capable, UEFI mode (no legacy CSM), 4 GB RAM minimum (8 GB recommended), 64 GB storage, 1 GHz+ dual-core 64-bit CPU on the compatibility list (8th-gen Intel or newer generally; 7th-gen generally excluded except some exceptions), DirectX 12 + WDDM 2.0 display. A 7th-generation Intel Core system (e.g. Precision 7520 i7-7xxx) is generally NOT on the official Windows 11 CPU list — upgrading requires an unsupported-installation path that Microsoft does not guarantee updates for. NOVA FIX reports the bundled database date and never claims this is the latest information. Never silently bypass hardware requirements.",
+    "Tags": "Windows 11,TPM 2.0,Secure Boot,UEFI,compatibility,requirements",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  },
+  {
+    "Id": "kb:offline-ai-boundaries",
+    "Title": "How NOVA FIX Local AI Works (Safety Boundaries)",
+    "Category": "AI",
+    "Content": "NOVA FIX runs a bundled quantized language model locally via llama.cpp on the CPU. The model: (1) never receives shell access, (2) only produces structured proposals that reference allowlisted action IDs, (3) cannot execute anything by itself — the repair engine validates every proposal against the action registry, (4) is optional: if loading fails due to memory constraints, deterministic rule-based diagnostics remain fully operational and the UI says so honestly. Rule-based conclusions are labelled 'rule-based inference'; model output is labelled 'probabilistic interpretation'. Retrieval-augmented answers cite bundled knowledge article IDs (kb:...). Nothing is ever sent over the network.",
+    "Tags": "AI,llama.cpp,RAG,safety,allowlist,offline,model",
+    "Source": "NOVA FIX bundled reference",
+    "Version": "1",
+    "PublishedDate": "2026-11-26"
+  }
+]

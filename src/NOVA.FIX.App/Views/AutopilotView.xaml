@@ -1,0 +1,63 @@
+<UserControl x:Class="NOVA.FIX.App.Views.AutopilotView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Border Grid.Row="0" Style="{StaticResource Card}">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+          <ComboBox ItemsSource="{Binding Modes}" SelectedItem="{Binding SelectedMode}"
+                    Width="130" Margin="0,0,8,0" VerticalAlignment="Center"/>
+          <Button Style="{StaticResource PrimaryButton}" Content="Build plan"
+                  Command="{Binding BuildPlanCommand}" Margin="0,0,8,0"/>
+          <Button Style="{StaticResource GhostButton}" Content="Approve low-risk"
+                  Command="{Binding ApproveAllCommand}" Margin="0,0,8,0"/>
+          <Button Style="{StaticResource PrimaryButton}" Content="Execute approved"
+                  Command="{Binding ExecuteCommand}"
+                  Background="{DynamicResource PurpleBrush}"/>
+        </StackPanel>
+        <StackPanel>
+          <TextBlock Text="NOVA Autopilot — scan → analyze → plan → APPROVE → execute → verify" Style="{StaticResource H2}"/>
+          <TextBlock Text="{Binding Phase}" Style="{StaticResource Muted}" Margin="0,4,0,0"/>
+        </StackPanel>
+      </DockPanel>
+    </Border>
+    <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,12,0,0">
+      <TextBlock Text="{Binding StatusMessage}" Style="{StaticResource Muted}"/>
+    </Border>
+    <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,12,6,0">
+      <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Plan steps" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+        <ListBox ItemsSource="{Binding Steps}" BorderThickness="0" Background="Transparent">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Margin="0,4">
+                <StackPanel Orientation="Horizontal">
+                  <CheckBox IsChecked="{Binding Approved, UpdateSourceTrigger=PropertyChanged}"/>
+                  <TextBlock Text="{Binding Title}" FontWeight="SemiBold" Margin="6,0,0,0"/>
+                  <Border Style="{StaticResource Badge}" Margin="8,0,0,0">
+                    <TextBlock Text="{Binding Risk}" FontSize="10"
+                               Foreground="{DynamicResource WarningBrush}"/>
+                  </Border>
+                </StackPanel>
+                <TextBlock Text="{Binding Rationale}" Style="{StaticResource Muted}" Margin="24,2,0,0"/>
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </DockPanel>
+    </Border>
+    <Border Grid.Row="3" Style="{StaticResource Card}" Margin="6,12,0,0">
+      <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Outcome" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+        <ListBox ItemsSource="{Binding OutcomeLines}" BorderThickness="0" Background="Transparent"
+                 FontFamily="Consolas" FontSize="11.5"/>
+      </DockPanel>
+    </Border>
+  </Grid>
+</UserControl>

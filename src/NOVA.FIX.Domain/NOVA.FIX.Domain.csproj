@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>NOVA.FIX.Domain</RootNamespace>
+    <AssemblyName>NOVA.FIX.Domain</AssemblyName>
+  </PropertyGroup>
+
+</Project>

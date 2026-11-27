@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build-test:
+    name: Build & Test (Windows x64)
+    runs-on: windows-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore NOVA.FIX.sln
+
+      - name: Build (Release x64)
+        run: dotnet build NOVA.FIX.sln -c Release --no-restore -p:PlatformTarget=x64
+
+      - name: Unit tests
+        run: >
+          dotnet test tests/NOVA.FIX.UnitTests/NOVA.FIX.UnitTests.csproj
+          -c Release --no-build --logger "trx;LogFileName=unit.trx"
+          --results-directory TestResults
+
+      - name: Integration tests
+        run: >
+          dotnet test tests/NOVA.FIX.IntegrationTests/NOVA.FIX.IntegrationTests.csproj
+          -c Release --no-build --logger "trx;LogFileName=integration.trx"
+          --results-directory TestResults
+
+      - name: Offline acceptance tests
+        run: >
+          dotnet test tests/NOVA.FIX.OfflineTests/NOVA.FIX.OfflineTests.csproj
+          -c Release --no-build --logger "trx;LogFileName=offline.trx"
+          --results-directory TestResults
+
+      - name: UI view-model tests
+        run: >
+          dotnet test tests/NOVA.FIX.UITests/NOVA.FIX.UITests.csproj
+          -c Release --no-build --logger "trx;LogFileName=ui.trx"
+          --results-directory TestResults
+
+      - name: Publish self-contained x64
+        run: >
+          dotnet publish src/NOVA.FIX.App/NOVA.FIX.App.csproj
+          -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=false
+          -o publish/novafix
+
+      - name: Stage offline data into publish output
+        shell: pwsh
+        run: |
+          Copy-Item -Recurse data publish/novafix/data
+          New-Item -ItemType Directory -Force publish/novafix/models | Out-Null
+          @"
+          NOVA FIX model staging directory.
+          Place novafix-lite.gguf / novafix-balanced.gguf / novafix-advanced.gguf here.
+          scripts/package-offline.ps1 stages the bundled baseline model automatically.
+          "@ | Set-Content publish/novafix/models/README.txt
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/**
+          retention-days: 14
+
+      - name: Upload publish output
+        uses: actions/upload-artifact@v4
+        with:
+          name: novafix-win-x64
+          path: publish/novafix/**
+          retention-days: 14
