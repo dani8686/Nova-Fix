@@ -22,11 +22,11 @@ public sealed class RepairViewModel : ViewModelBase
         _registry = c.Resolve<IActionRegistry>();
         _executor = c.Resolve<IRepairExecutor>();
 
-        foreach (var a in _registry.All) Actions.Add(a);
-        if (Actions.Count > 0) Selected = Actions[0];
-
         ExecuteCommand = new AsyncRelayCommand(ExecuteAsync,
             () => Selected is not null && !IsBusy);
+
+        foreach (var a in _registry.All) Actions.Add(a);
+        if (Actions.Count > 0) Selected = Actions[0];
     }
 
     public AsyncRelayCommand ExecuteCommand { get; }
@@ -40,7 +40,7 @@ public sealed class RepairViewModel : ViewModelBase
         set
         {
             if (SetProperty(ref _selected, value))
-                ExecuteCommand.RaiseCanExecuteChanged();
+                ExecuteCommand?.RaiseCanExecuteChanged();
         }
     }
 
