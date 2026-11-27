@@ -1,5 +1,6 @@
 using NOVA.FIX.Domain.Enums;
 using NOVA.FIX.Domain.Models;
+using NOVA.FIX.Domain.Results;
 using NOVA.FIX.Reporting;
 using Xunit;
 

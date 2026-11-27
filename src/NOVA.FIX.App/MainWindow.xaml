@@ -45,68 +45,52 @@
                     <StackPanel>
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      IsChecked="True" Command="{Binding NavigateCommand}"
-                                     CommandParameter="overview" Header="System Overview"
-                                     Content="◉" />
+                                     CommandParameter="overview" Content="◉  System Overview" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="scanner" Header="Deep Scanner"
-                                     Content="⌕" />
+                                     CommandParameter="scanner" Content="⌕  Deep Scanner" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="detective" Header="AI Problem Detective"
-                                     Content="🔎" />
+                                     CommandParameter="detective" Content="🔎  AI Problem Detective" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="repair" Header="One-Click Repair"
-                                     Content="🛠" />
+                                     CommandParameter="repair" Content="🛠  One-Click Repair" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="performance" Header="Performance Lab"
-                                     Content="📈" />
+                                     CommandParameter="performance" Content="📈  Performance Lab" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="startup" Header="Startup Manager"
-                                     Content="🚀" />
+                                     CommandParameter="startup" Content="🚀  Startup Manager" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="services" Header="Service Manager"
-                                     Content="⚙" />
+                                     CommandParameter="services" Content="⚙  Service Manager" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="drivers" Header="Driver Intelligence"
-                                     Content="🔌" />
+                                     CommandParameter="drivers" Content="🔌  Driver Intelligence" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="storage" Header="Storage Guardian"
-                                     Content="💾" />
+                                     CommandParameter="storage" Content="💾  Storage Guardian" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="compatibility" Header="Windows Compatibility"
-                                     Content="🪟" />
+                                     CommandParameter="compatibility" Content="🪟  Windows Compatibility" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="rescue" Header="Rescue &amp; Restore"
-                                     Content="🛟" />
+                                     CommandParameter="rescue" Content="🛟  Rescue &amp; Restore" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="reports" Header="Report Center"
-                                     Content="📄" />
+                                     CommandParameter="reports" Content="📄  Report Center" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="autopilot" Header="NOVA Autopilot"
-                                     Content="✈" />
+                                     CommandParameter="autopilot" Content="✈  NOVA Autopilot" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="updates" Header="Offline Updates"
-                                     Content="📦" />
+                                     CommandParameter="updates" Content="📦  Offline Updates" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="ai" Header="Local AI Settings"
-                                     Content="🧠" />
+                                     CommandParameter="ai" Content="🧠  Local AI Settings" />
                         <RadioButton Style="{StaticResource NavButton}" GroupName="nav"
                                      Command="{Binding NavigateCommand}"
-                                     CommandParameter="settings" Header="Settings &amp; About"
-                                     Content="ℹ" />
+                                     CommandParameter="settings" Content="ℹ  Settings &amp; About" />
                     </StackPanel>
                 </ScrollViewer>
 
